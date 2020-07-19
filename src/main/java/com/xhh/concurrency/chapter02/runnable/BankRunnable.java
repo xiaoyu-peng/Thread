@@ -4,7 +4,7 @@ public class BankRunnable {
 
     public static void main(String[] args) {
 
-        TicketWindowRunnable tr = new TicketWindowRunnable();
+        final TicketWindowRunnable tr = new TicketWindowRunnable();
         Thread t1 = new Thread(tr, "窗口01");
         t1.start();
 
