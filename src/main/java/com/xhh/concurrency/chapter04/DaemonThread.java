@@ -1,4 +1,4 @@
-package com.xhh.concurrency.chpter04;
+package com.xhh.concurrency.chapter04;
 
 /**
  * 测试
