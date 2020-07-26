@@ -2,8 +2,8 @@ package com.xhh.concurrency.chapter09;
 
 /**
  *
- * 生产者和消费者 版本一
- * @author PengHui
+ * 生产者和消费者 版本一 单线程情况下正常
+ * @author xhhui
  */
 public class ProductConsumer01 {
 
