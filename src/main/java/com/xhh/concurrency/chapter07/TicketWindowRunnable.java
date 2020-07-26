@@ -13,7 +13,7 @@ public class TicketWindowRunnable implements  Runnable {
     public void run() {
         while (true) {
 
-            // 同步代码块——编程了串行执行，影响效率
+            // 同步代码块——串行化执行，影响效率
             synchronized (MONITOR){
                 if (index>MAX){
                     break;
