@@ -1,0 +1,59 @@
+package com.xhh.concurrency.chapter10;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+
+/**
+ * @author PH
+ * @date 2020/7/27 19:33
+ * @description
+ */
+public class BooleanLock implements Lock {
+
+    // The initValue is true  indicated the lock have be get.
+    // The initValue is false  indicated the lock is free (other thread can get this.)
+    private boolean initValue;
+
+    private Collection<Thread> blockedThreads = new ArrayList<>();
+
+    public BooleanLock() {
+        this.initValue = false;
+    }
+
+    @Override
+    public synchronized void lock() throws InterruptedException {
+        while (initValue){
+            blockedThreads.add(Thread.currentThread());
+            this.wait();
+        }
+
+        // 获取到锁
+        this.initValue = true;
+        blockedThreads.remove(Thread.currentThread());
+    }
+
+    @Override
+    public synchronized void lock(long mils) throws InterruptedException, TimeOutException {
+
+    }
+
+    @Override
+    public synchronized void unLock() {
+        this.initValue = false;
+        Optional.of(Thread.currentThread().getName() + " release the lock monitor.").ifPresent(System.out::println);
+        this.notifyAll();
+    }
+
+    @Override
+    public Collection<Thread> getBlockedThread() {
+        // 禁止修改
+        return Collections.unmodifiableCollection(blockedThreads);
+    }
+
+    @Override
+    public int getBlockedSize() {
+        return blockedThreads.size();
+    }
+}
