@@ -26,6 +26,7 @@ public class WaitSet {
                 @Override
                 public void run() {
                     synchronized (LOCK){
+                        Optional.of(Thread.currentThread().getName() + " begin...").ifPresent(System.out::println);
                         try {
                             Optional.of(Thread.currentThread().getName() + " will come to wait set").ifPresent(System.out::println);
                             LOCK.wait();
@@ -33,13 +34,17 @@ public class WaitSet {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                        Optional.of(Thread.currentThread().getName() + " end...").ifPresent(System.out::println);
                     }
                 }
             }.start()
         );
 
         try {
+            Optional.of("sleep begin...").ifPresent(System.out::println);
             Thread.sleep(3_000);
+            Optional.of("sleep end...").ifPresent(System.out::println);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
