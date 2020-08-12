@@ -1,7 +1,5 @@
-package com.xhh.concurrency.pattern.chapter01;
+package com.xhh.concurrency.pattern.chapter02;
 
-
-import com.xhh.concurrency.basic.chapter07.SynchronizedTest;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
