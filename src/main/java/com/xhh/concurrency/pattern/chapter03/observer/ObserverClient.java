@@ -1,4 +1,4 @@
-package com.xhh.concurrency.pattern.chapter03;
+package com.xhh.concurrency.pattern.chapter03.observer;
 
 /**
  * @author PengHui

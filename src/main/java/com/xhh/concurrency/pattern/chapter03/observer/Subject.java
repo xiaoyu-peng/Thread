@@ -1,4 +1,4 @@
-package com.xhh.concurrency.pattern.chapter03;
+package com.xhh.concurrency.pattern.chapter03.observer;
 
 import java.util.ArrayList;
 import java.util.List;
