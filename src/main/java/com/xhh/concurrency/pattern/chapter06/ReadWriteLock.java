@@ -14,13 +14,24 @@ public class ReadWriteLock {
     private int writingWriters = 0;
     private int waitingWriters = 0;
 
+    private boolean preferWriter = true;
+
+    public ReadWriteLock() {
+        this(true);
+    }
+
+    public ReadWriteLock(boolean preferWriter) {
+        this.preferWriter = preferWriter;
+    }
+
     /**
      * 读锁
      */
     public synchronized void readLock() throws InterruptedException {
         this.waitingWriters++;
         try {
-            while (waitingWriters > 0) {
+            while (waitingWriters > 0 || (preferWriter && waitingWriters > 0)) {
+                // 存在写操作，则读操作wait
                 this.wait();
             }
             this.readingReaders++;
@@ -35,21 +46,23 @@ public class ReadWriteLock {
     }
 
     /**
-     * 写锁
+     * 写锁，最多只有一个
      */
     public synchronized void writeLock() throws InterruptedException {
         this.waitingWriters++;
-        while (readingReaders > 0 || waitingWriters > 0) {
-            try {
+
+        try {
+            while (readingReaders > 0 || waitingWriters > 0) {
                 this.wait();
-                this.waitingWriters++;
-            } finally {
-                this.waitingWriters--;
             }
+            this.waitingWriters++;
+        } finally {
+            this.waitingWriters--;
         }
     }
 
-    public synchronized void writeUnLock(){
+
+    public synchronized void writeUnLock() {
         this.waitingWriters--;
         this.notifyAll();
     }
