@@ -16,6 +16,8 @@ public class ReadWriterLockClient {
         new ReadWorker(data).start();
         new ReadWorker(data).start();
         new ReadWorker(data).start();
+        new ReadWorker(data).start();
+        new ReadWorker(data).start();
 
         new WriterWorker(data, "dokdjfalqeqeqlafod").start();
         new WriterWorker(data, "DOKDJFALQEQEQLAFOD").start();

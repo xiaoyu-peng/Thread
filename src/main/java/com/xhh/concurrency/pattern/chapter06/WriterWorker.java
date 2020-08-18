@@ -34,7 +34,7 @@ public class WriterWorker extends Thread {
                 while(true){
                     char c = nextChar();
                     data.write(c);
-                    Thread.sleep(random.nextInt(1000));
+                    Thread.sleep(random.nextInt(10));
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
