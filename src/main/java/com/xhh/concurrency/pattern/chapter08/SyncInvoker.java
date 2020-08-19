@@ -1,7 +1,15 @@
 package com.xhh.concurrency.pattern.chapter08;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
+/**
+ *
+ * FUTURE 模式
+ *
+ *  Future          -> 代表的是未来的一个逻辑
+ *  FutureTask      -> 将你的调用逻辑进行隔离
+ *  FutureService   -> 桥接 Future 和 FutureTask
+ *
+ *
+ */
 public class SyncInvoker {
 
     public static void main(String[] args) throws InterruptedException {
@@ -11,20 +19,22 @@ public class SyncInvoker {
         System.out.println(result);*/
 
         FutureService futureService = new FutureService();
-        Future<String> future = futureService.submit( () -> {
+        futureService.submit( () -> {
             try {
                 Thread.sleep(10_000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return "FINISH";
-        });
+        }, System.out::println);
 
         System.out.println("=========================");
         System.out.println(" do other thing. ");
         Thread.sleep(1000);
         System.out.println("=========================");
-        System.out.println(future.get());
+
+        // 进入等待状态
+        /*System.out.println(future.get());*/
     }
 
     private static String get() {
