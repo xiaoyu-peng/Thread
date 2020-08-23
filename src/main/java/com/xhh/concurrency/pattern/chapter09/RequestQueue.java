@@ -10,18 +10,17 @@ public class RequestQueue {
 
     public Request getRequest(){
         synchronized (queue){
-            while(queue.size()<0){
+            while(queue.size()<=0){
                 try {
                     queue.wait();
                 } catch (InterruptedException e) {
-                    break;
+                    return null;
                 }
             }
 
             return queue.removeFirst();
         }
     }
-
 
     public void putRequest(Request request){
         synchronized (queue){
