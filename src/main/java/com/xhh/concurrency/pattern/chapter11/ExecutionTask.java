@@ -21,13 +21,13 @@ public class ExecutionTask implements Runnable {
 
     @Override
     public void run() {
-        final Context context = new Context();
-        queryFromDBAction.execute(context);
+        queryFromDBAction.execute();
         System.out.println("=======日志：======= the name query successful");
-        queryFromHttpAction.execute(context);
+        queryFromHttpAction.execute();
 
         System.out.println("=======日志：======= the card id query successful");
 
+        Context context = ActionContext.getInstance().getContext();
         System.out.println(context.toString());
     }
 }
