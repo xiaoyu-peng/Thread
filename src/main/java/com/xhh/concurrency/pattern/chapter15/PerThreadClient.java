@@ -11,5 +11,7 @@ public class PerThreadClient {
                 .forEach(
                         i -> handler.request(new Message(String.valueOf(i)))
                 );
+
+        handler.shutDown();
     }
 }
