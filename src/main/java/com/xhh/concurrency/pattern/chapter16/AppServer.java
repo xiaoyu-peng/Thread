@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AppServer extends Thread {
 
@@ -14,7 +16,12 @@ public class AppServer extends Thread {
 
     private volatile boolean start = true;
 
-    private List<Thread> clientHandlers = new ArrayList<>();
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    /**
+     * 记录工作线程
+     */
+    private List<ClientHandler> clientHandlers = new ArrayList<>();
 
     public AppServer() {
         this(DEFAULT_PORT);
@@ -30,10 +37,18 @@ public class AppServer extends Thread {
             ServerSocket server = new ServerSocket();
             while(start){
                 Socket client = server.accept();
+                ClientHandler clientHandler = new ClientHandler(client);
+                executor.submit(clientHandler);
+                clientHandlers.add(clientHandler);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            this.dispost();
         }
+    }
+
+    private void dispost() {
     }
 
     public void shutDown(){
