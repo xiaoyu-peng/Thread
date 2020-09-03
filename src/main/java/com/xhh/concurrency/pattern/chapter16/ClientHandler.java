@@ -23,20 +23,29 @@ public class ClientHandler implements Runnable {
         ) {
             while (running) {
                 String message = br.readLine();
+                if (message == null) {
+                    break;
+                }
+                System.out.println("Come from client > " + message);
+                pw.write("echo " + message + "\n");
+                pw.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();
+            this.running = false;
+        } finally {
+            this.stop();
         }
     }
 
     public void stop() {
-        if (running) {
+        if (!running) {
             return;
         }
 
         this.running = false;
         try {
-            socket.close();
+            this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -18,6 +18,8 @@ public class AppServer extends Thread {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
+    private ServerSocket server;
+
     /**
      * 记录工作线程
      */
@@ -34,7 +36,7 @@ public class AppServer extends Thread {
     @Override
     public void run() {
         try {
-            ServerSocket server = new ServerSocket();
+            this.server = new ServerSocket();
             while(start){
                 Socket client = server.accept();
                 ClientHandler clientHandler = new ClientHandler(client);
@@ -42,16 +44,20 @@ public class AppServer extends Thread {
                 clientHandlers.add(clientHandler);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         } finally {
-            this.dispost();
+            this.dispose();
         }
     }
 
-    private void dispost() {
+    private void dispose() {
+        this.clientHandlers.stream().forEach(ClientHandler::stop);
+        this.executor.shutdown();
     }
 
-    public void shutDown(){
+    public void shutDown() throws IOException {
         this.start = false;
+        this.interrupt();
+        this.server.close();
     }
 }
